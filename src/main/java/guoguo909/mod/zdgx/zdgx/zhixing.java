@@ -11,7 +11,18 @@ public class zhixing extends Thread
     public void run() {
         try
         {
-            String wjml=System.getProperty("user.dir");
+            int banben=2;
+            jiemian j=new jiemian();
+            int gitbanban=Integer.parseInt(j.getgitbanben("z2bguoguo/zdgxmc"));
+            String wjml=System.getProperty("user.dir")+"\\zdgx";
+            File wjmlcz=new File(wjml);
+            if (!wjmlcz .exists())
+            {
+                wjmlcz.mkdir();
+            }
+            System.out.println(wjml);
+            File modmlf=new File(wjml);
+            String modml= modmlf.getParent()+"/mods";
             File json=new File(wjml+"/json.txt");
             if (!json.exists())
             {
@@ -23,19 +34,22 @@ public class zhixing extends Thread
             char jsonr[]=new char[1024];
             int jsonlen= jsons.read(jsonr);
             String dizhi=new String(jsonr,0,jsonlen);
-            String gxdizhi=dizhi+"/raw/main/yunxing.jar";//下载yunxing.jar的地址
-            jiemian j=new jiemian();
             String[] b=j.getmod(j.geturl(dizhi));//云端文件列表
-            String[] c=j.getwenjian(wjml+"/mods");//本地文件列表
-            String[] duo=j.bendiduo(c,b,wjml+"/mods/");//本地文件多出的
-            String[] shao=j.bendiduo(b,c,wjml+"/mods/");//本地文件少的
+            String[] c=j.getwenjian(modml);//本地文件列表
+            String[] duo=j.bendiduo(c,b,modml);//本地文件多出的
+            String[] shao=j.bendiduo(b,c,modml);//本地文件少的
             File yunxing=new File(wjml+"/yunxing.jar");
-            if (!yunxing.exists())
+            if(gitbanban>banben)
             {
-                j.chuangjian();
+                String gxdizhi=j.getgitxiazai("z2bguoguo/zdgxmc","zdgx"+String.valueOf(gitbanban)+".jar");
+                jiemian.down downs=j.new down(gxdizhi, modml+"/"+"zdgx"+String.valueOf(gitbanban)+".jar", 1,1);
+                downs.start();
+            }
+            if (!yunxing.exists() || gitbanban>banben)
+            {
+                String gxdizhi=j.getgitxiazai("z2bguoguo/zdgxmc","yunxing.jar");//下载yunxing.jar的地址
                 jiemian.down downs=j.new down(gxdizhi, yunxing.getPath(), 1,1);
                 downs.start();
-                j.a.dispose();
             }
             if (duo.length!=0||shao.length!=0)
             {

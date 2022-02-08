@@ -1,5 +1,7 @@
 package yunxing;
 
+import com.alibaba.fastjson.JSONObject;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -167,5 +169,17 @@ public class jiemian {
             }
         }
     }
-
+    public String getgitbanben(String repos)
+    {
+        JSONObject json=JSONObject.parseObject(geturl("https://api.github.com/repos/"+repos+"/releases/latest"));
+        String name= json.getString("name");
+        return (name);
+    }
+    public String getgitxiazai(String repos,String filename)
+    {
+        JSONObject json=JSONObject.parseObject(geturl("https://api.github.com/repos/"+repos+"/releases/latest"));
+        String name= json.getString("name");
+        String url="https://github.com/"+repos+"/releases/download/"+name+"/"+filename;
+        return (url);
+    }
 }

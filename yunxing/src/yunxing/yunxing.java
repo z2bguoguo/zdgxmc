@@ -9,14 +9,15 @@ public class yunxing {
     {
         try
         {
-            String wjml=System.getProperty("user.dir");
+            jiemian j=new jiemian();
+            File wjmls=new File(System.getProperty("user.dir"));
+            String wjml=wjmls.getParent();
             File json=new File(wjml+"json.txt");
             FileReader jsons=new FileReader(json);
             char jsonr[]=new char[1024];
             int jsonlen= jsons.read(jsonr);
             String dizhi=new String(jsonr,0,jsonlen);
             System.setProperty("java.awt.headless", "false");
-            jiemian j=new jiemian();
             j.chuangjian();
             String[] b=j.getmod(j.geturl(dizhi));//云端文件列表
             String[] c=j.getwenjian(wjml+"/mods");//本地文件列表

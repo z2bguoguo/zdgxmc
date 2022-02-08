@@ -1,5 +1,7 @@
 package guoguo909.mod.zdgx.zdgx;
 
+import com.alibaba.fastjson.JSONObject;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -9,7 +11,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 public class jiemian {
     JFrame a=new JFrame("更新");
     JLabel text=new JLabel("更新中");
@@ -133,6 +134,7 @@ public class jiemian {
         {
             try
             {
+                chuangjian();
                 URL url=new URL(urls);
                 HttpURLConnection con = (HttpURLConnection) (url.openConnection());
                 InputStream reader=con.getInputStream();
@@ -155,6 +157,7 @@ public class jiemian {
                 jindu.setValue((int) jd);
                 out.close();
                 reader.close();
+                a.dispose();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
@@ -166,5 +169,18 @@ public class jiemian {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
             }
         }
+    }
+    public String getgitbanben(String repos)
+    {
+        JSONObject json=JSONObject.parseObject(geturl("https://api.github.com/repos/"+repos+"/releases/latest"));
+        String name= json.getString("name");
+        return (name);
+    }
+    public String getgitxiazai(String repos,String filename)
+    {
+        JSONObject json=JSONObject.parseObject(geturl("https://api.github.com/repos/"+repos+"/releases/latest"));
+        String name= json.getString("name");
+        String url="https://github.com/"+repos+"/releases/download/"+name+"/"+filename;
+        return (url);
     }
 }
