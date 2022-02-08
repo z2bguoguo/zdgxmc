@@ -114,8 +114,12 @@ public class jiemian {
     {
         for(int i=0;i< duo.length;i++)
         {
-            File file = new File(duo[i]);
-            file.renameTo(new File(duo[i]+".duo"));
+            if(duo[i].substring(0,5).indexOf("zdgx")>=0)
+            {
+                File file = new File(duo[i]);
+                file.renameTo(new File(duo[i]+".duo"));
+            }
+
         }
     }
     public class down extends Thread

@@ -11,7 +11,7 @@ public class zhixing extends Thread
     public void run() {
         try
         {
-            int banben=2;
+            int banben=1;
             jiemian j=new jiemian();
             int gitbanban=Integer.parseInt(j.getgitbanben("z2bguoguo/zdgxmc"));
             String wjml=System.getProperty("user.dir")+"\\zdgx";
@@ -43,17 +43,20 @@ public class zhixing extends Thread
             {
                 String gxdizhi=j.getgitxiazai("z2bguoguo/zdgxmc","zdgx"+String.valueOf(gitbanban)+".jar");
                 jiemian.down downs=j.new down(gxdizhi, modml+"/"+"zdgx"+String.valueOf(gitbanban)+".jar", 1,1);
-                downs.start();
+                downs.run();
+                File ziji = new File(modml+"/"+"zdgx"+String.valueOf(banben)+".jar");
+                ziji.renameTo(new File(modml+"/"+"zdgx"+String.valueOf(banben)+".jar.duo"));
             }
             if (!yunxing.exists() || gitbanban>banben)
             {
                 String gxdizhi=j.getgitxiazai("z2bguoguo/zdgxmc","yunxing.jar");//下载yunxing.jar的地址
                 jiemian.down downs=j.new down(gxdizhi, yunxing.getPath(), 1,1);
-                downs.start();
+                downs.run();
             }
             if (duo.length!=0||shao.length!=0)
             {
                 Runtime.getRuntime().exec("java -jar "+wjml+"/yunxing.jar");
+                System.out.println("java -jar "+wjml+"/yunxing.jar");
                 System.exit(0);
             }
         }

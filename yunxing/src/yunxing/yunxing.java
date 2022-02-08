@@ -10,9 +10,8 @@ public class yunxing {
         try
         {
             jiemian j=new jiemian();
-            File wjmls=new File(System.getProperty("user.dir"));
-            String wjml=wjmls.getParent();
-            File json=new File(wjml+"json.txt");
+            File wjml=new File(System.getProperty("user.dir"));
+            File json=new File(wjml+"/zdgx/json.txt");
             FileReader jsons=new FileReader(json);
             char jsonr[]=new char[1024];
             int jsonlen= jsons.read(jsonr);
@@ -32,7 +31,7 @@ public class yunxing {
             {
                 for(int i=0;i< shao.length;i++)
                 {
-                    jiemian.down d=j.new down(dizhi+"/raw/main/"+shao[i],wjml+"/mods/"+shao[i],i+1,shao.length);
+                    jiemian.down d=j.new down(dizhi+"/raw/main"+shao[i],wjml+"/mods/"+shao[i],i+1,shao.length);
                     d.start();
                 }
             }

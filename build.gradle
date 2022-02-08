@@ -22,6 +22,8 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     implementation 'com.alibaba:fastjson:1.2.79'
+    modImplementation 'com.alibaba:fastjson:1.2.79'
+    include 'com.alibaba:fastjson:1.2.79'
 }
 
 processResources {

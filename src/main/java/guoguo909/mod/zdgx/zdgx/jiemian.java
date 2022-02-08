@@ -102,7 +102,7 @@ public class jiemian {
         for (int i=0;i<bendi.length;i++)
         {
             int sx=Arrays.binarySearch(yun,bendi[i]);
-            if(!cunzaiarray(yun,bendi[i]))
+            if(!cunzaiarray(yun,bendi[i]) && bendi[i].substring(0,5).indexOf("zdgx")>=0)
             {
                 duo.add(mulu+bendi[i]);
             }
