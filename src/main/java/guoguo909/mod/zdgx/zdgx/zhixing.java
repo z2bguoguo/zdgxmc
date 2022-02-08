@@ -11,7 +11,7 @@ public class zhixing extends Thread
     public void run() {
         try
         {
-            int banben=1;
+            int banben=2;
             jiemian j=new jiemian();
             int gitbanban=Integer.parseInt(j.getgitbanben("z2bguoguo/zdgxmc"));
             String wjml=System.getProperty("user.dir")+"\\zdgx";
