@@ -1,6 +1,8 @@
 package yunxing;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class jiemian {
+    protected static final Logger logger = LogManager.getLogger(jiemian.class);
     JFrame a=new JFrame("更新");
     JLabel text=new JLabel("更新中");
     Container con =a.getContentPane();
@@ -114,9 +117,9 @@ public class jiemian {
     {
         for(int i=0;i< duo.length;i++)
         {
-            if(duo[i].substring(0,5).indexOf("zdgx")>=0)
+            File file = new File(duo[i]);
+            if(file.getName().substring(0,5).indexOf("zdgx")<0)
             {
-                File file = new File(duo[i]);
                 file.renameTo(new File(duo[i]+".duo"));
             }
 

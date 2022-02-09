@@ -1,6 +1,8 @@
 package guoguo909.mod.zdgx.zdgx;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +13,10 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 public class jiemian {
+    protected static final Logger logger = LogManager.getLogger(jiemian.class);
     JFrame a=new JFrame("更新");
     JLabel text=new JLabel("更新中");
     Container con =a.getContentPane();
@@ -102,9 +107,9 @@ public class jiemian {
         for (int i=0;i<bendi.length;i++)
         {
             int sx=Arrays.binarySearch(yun,bendi[i]);
-            if(!cunzaiarray(yun,bendi[i]) && bendi[i].substring(0,5).indexOf("zdgx")>=0)
+            if(!cunzaiarray(yun,bendi[i]) && bendi[i].substring(0,5).indexOf("zdgx")<0)
             {
-                duo.add(mulu+bendi[i]);
+                duo.add(mulu+"/"+bendi[i]);
             }
         }
         return(duo.toArray(new String[0]));
