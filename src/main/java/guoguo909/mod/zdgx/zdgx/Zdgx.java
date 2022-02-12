@@ -15,7 +15,8 @@ public class Zdgx implements ModInitializer {
             System.setProperty("java.awt.headless", "false");
             zhixing zx=new zhixing();
             zx.start();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println("错误报告");
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
