@@ -7,6 +7,20 @@ import javax.swing.*;
 import java.io.File;
 import java.io.FileReader;
 import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
+import net.fabricmc.fabric.api.client.networking.v1.ClientLoginConnectionEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientLoginNetworking;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientLoginNetworkHandler;
+import net.minecraft.network.Packet;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.s2c.play.BossBarS2CPacket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 public class zhixing extends Thread
@@ -16,7 +30,7 @@ public class zhixing extends Thread
         try
         {
            logger.info("开始执行");
-            int banben=2;
+            int banben=4;
             jiemian j=new jiemian();
             logger.info("初始化完毕");
             int gitbanban=Integer.parseInt(j.getgitbanben("z2bguoguo/zdgxmc"));
@@ -45,6 +59,7 @@ public class zhixing extends Thread
             char jsonr[]=new char[1024];
             int jsonlen= jsons.read(jsonr);
             String dizhi=new String(jsonr,0,jsonlen);
+            jsons.close();
             logger.info("json地址："+dizhi);
             String[] b=j.getmod(j.geturl(dizhi));//云端文件列表
             logger.info("云端文件列表："+ Arrays.toString(b));
@@ -89,4 +104,5 @@ public class zhixing extends Thread
         }
 
     }
+
 }

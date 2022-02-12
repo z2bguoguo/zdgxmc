@@ -8,13 +8,17 @@
   "contact": {},
   "license": "MIT",
   "icon": "assets/zdgx/icon.png",
-  "environment": "client",
+  "environment": "*",
   "entrypoints": {
     "client": [
       "guoguo909.mod.zdgx.zdgx.client.ZdgxClient"
     ],
     "main": [
       "guoguo909.mod.zdgx.zdgx.Zdgx"
+    ],
+    "server":
+    [
+      "guoguo909.mod.zdgx.zdgx.server.ZdgxServer"
     ]
   },
   "mixins": [
