@@ -33,6 +33,7 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.version
     }
+    files("assets/zdgx/icon.png")
 }
 
 def targetJavaVersion = 17
