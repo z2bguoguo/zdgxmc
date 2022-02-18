@@ -1,5 +1,6 @@
 package guoguo909.mod.zdgx.zdgx;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.system.CallbackI;
+
 public class jiemian {
     protected static final Logger logger = LogManager.getLogger(jiemian.class);
     JFrame a=new JFrame("更新");
@@ -187,5 +190,37 @@ public class jiemian {
         String name= json.getString("name");
         String url="https://github.com/"+repos+"/releases/download/"+name+"/"+filename;
         return (url);
+    }
+    public void jsoncj(File f)
+    {
+        try
+        {
+            JSONObject js=new JSONObject();
+            js.put("address","");
+            js.put("enable",true);
+            FileWriter jsons=new FileWriter(f);
+            jsons.write(JSONObject.toJSONString(js,true));
+            jsons.flush();
+            jsons.close();
+        }
+        catch (Exception e) {
+            System.out.println("错误报告");
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+            System.out.println("错误报告尾");
+        }
+
+    }
+    public class curseforge
+    {
+        public JSONObject getmod(String modid)
+        {
+            JSONObject json=JSONObject.parseObject(geturl("https://api.curseforge.com/v1/mods/"+modid));
+            return(json);
+        }
+        public String getfileid(JSONObject mod)
+        {
+            return("");
+        }
     }
 }
