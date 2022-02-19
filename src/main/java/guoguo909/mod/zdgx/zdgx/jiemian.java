@@ -1,6 +1,7 @@
 package guoguo909.mod.zdgx.zdgx;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -84,6 +85,20 @@ public class jiemian {
         s=str.substring(str.indexOf("这是内容开始")+6, str.indexOf("这是内容结束"));
         String[] s2=s.split(",");
         return(s2);
+    }
+    public JSONArray getmodary(String str)
+    {
+        JSONArray a=JSONArray.parseArray(str);
+        return(a);
+    }
+    public String[] getmodfilenames(JSONArray modary)
+    {
+        String[] r=new String[modary.size()];
+        for (int i=0;i<modary.size();i++)
+        {
+            r[i]=modary.getJSONObject(i).getString("filename");
+        }
+        return (r);
     }
     public String[] getwenjian(String mulu)
     {
@@ -211,16 +226,76 @@ public class jiemian {
         }
 
     }
-    public class curseforge
+    public static class curseforge
     {
-        public JSONObject getmod(String modid)
+        public String getcuurl(String urls)
         {
-            JSONObject json=JSONObject.parseObject(geturl("https://api.curseforge.com/v1/mods/"+modid));
+            try
+            {
+                URL url=new URL(urls);
+                HttpURLConnection b=(HttpURLConnection) url.openConnection();
+                b.addRequestProperty("x-api-key","$2a$10$qgRhXiDWOmZq.60.6Lejlu8tkZiVf0otjILqJ2i8OmK9pT/ag5Ugi");
+                BufferedReader reader=new BufferedReader(new InputStreamReader(b.getInputStream(),"UTF-8"));
+                String line;
+                String s="";
+                while((line=reader.readLine())!=null)
+                {
+                    s=s+line;
+                }
+                reader.close();
+                return (s);
+            }
+            catch (MalformedURLException e)
+            {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+                return ("");
+            }
+            catch (IOException e)
+            {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+                return ("");
+            }
+        }
+        public JSONObject getmoddata(String modid,String gameVersionTypeId)
+        {
+            JSONObject json=JSONObject.parseObject(getcuurl("https://api.curseforge.com/v1/mods/"+modid+"/files?gameVersionTypeId="+gameVersionTypeId));
             return(json);
         }
-        public String getfileid(JSONObject mod)
+        public JSONArray getmodary(JSONObject moddata)
         {
+           return(moddata.getJSONObject("data").getJSONArray("latestFiles"));
+        }
+        public String GetGameVersionTypeId(String GameVersionName)
+        {
+            JSONArray j;
+            JSONArray vj=JSONObject.parseObject(getcuurl("https://api.curseforge.com/v1/games/432/versions")).getJSONArray("data");
+            for(int i=0;i<vj.size();i++)
+            {
+                j=vj.getJSONObject(i).getJSONArray("versions");
+                if ( j.contains(GameVersionName) && j.size()<20)
+                {
+                    return(vj.getJSONObject(i).getString("type"));
+                }
+            }
             return("");
+        }
+        public JSONObject getmodfiledata(JSONArray modary,String modname,String loder)//loder是mod加载器
+        {
+            for(int i=0;i<modary.size();i++)
+            {
+                JSONObject j=modary.getJSONObject(i);
+                if(j.getString("displayName").equals(modname) && j.getJSONArray("gameVersions").contains(loder))
+                {
+                    return(j);
+                }
+            }
+            return(null);
+        }
+        public String getxzdz(JSONObject modfiledata)//获取下载地址
+        {
+            return(modfiledata.getString("downloadUrl"));
         }
     }
 }

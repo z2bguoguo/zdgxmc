@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -27,10 +28,11 @@ import org.apache.logging.log4j.Logger;
 public class zhixing extends Thread
 {
     protected static final Logger logger = LogManager.getLogger(zhixing.class);
+    public String GameVersionName;
     public void run() {
         try
         {
-           logger.info("开始执行");
+            logger.info("开始执行");
             int banben=5;
             jiemian j=new jiemian();
             logger.info("初始化完毕");
@@ -67,7 +69,11 @@ public class zhixing extends Thread
             logger.info("json地址："+dizhi);
             if (jsonx.getBoolean("enable"))
             {
-                String[] b=j.getmod(j.geturl(dizhi));//云端文件列表
+                jiemian.curseforge cu=new jiemian.curseforge();
+                String GameVersionTypeId=cu.GetGameVersionTypeId(GameVersionName);
+                logger.info("GameVersionTypeId："+GameVersionTypeId);
+                JSONArray modary= j.getmodary(j.geturl(dizhi));
+                String[] b=j.getmodfilenames(modary);//云端文件列表
                 logger.info("云端文件列表："+ Arrays.toString(b));
                 String[] c=j.getwenjian(modml);//本地文件列表
                 logger.info("本地文件列表："+ Arrays.toString(c));

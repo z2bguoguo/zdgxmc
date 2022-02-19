@@ -1,5 +1,6 @@
 package yunxing;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -188,5 +189,19 @@ public class jiemian {
         String name= json.getString("name");
         String url="https://github.com/"+repos+"/releases/download/"+name+"/"+filename;
         return (url);
+    }
+    public JSONArray getmodary(String str)
+    {
+        JSONArray a=JSONArray.parseArray(str);
+        return(a);
+    }
+    public String[] getmodfilenames(JSONArray modary)
+    {
+        String[] r=new String[modary.size()];
+        for (int i=0;i<modary.size();i++)
+        {
+            r[i]=modary.getJSONObject(i).getString("filename");
+        }
+        return (r);
     }
 }
