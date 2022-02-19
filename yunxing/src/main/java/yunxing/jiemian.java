@@ -204,4 +204,15 @@ public class jiemian {
         }
         return (r);
     }
+    public String getdowndz(JSONArray modary,String filename)
+    {
+        for (int i=0;i<modary.size();i++)
+        {
+            if (modary.getJSONObject(i).getString("filename").equals(filename))
+            {
+                return(modary.getJSONObject(i).getString("download"));
+            }
+        }
+        return("");
+    }
 }

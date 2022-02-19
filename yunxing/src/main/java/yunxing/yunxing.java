@@ -38,7 +38,7 @@ public class yunxing {
             //String[] c=j.getwenjian("D:\\mc\\.minecraft\\versions\\mod测试\\mods");
             String[] duo=j.bendiduo(c,b,wjml+"/mods/");//本地文件多出的
             logger.info("本地文件多出的："+ Arrays.toString(duo));
-            String[] shao=j.bendiduo(b,c,"/");//本地文件少的
+            String[] shao=j.bendiduo(b,c,"");//本地文件少的
             logger.info("本地文件少的："+ Arrays.toString(shao));
             if (duo.length!=0)
             {
@@ -50,7 +50,7 @@ public class yunxing {
                 logger.info("处理少");
                 for(int i=0;i< shao.length;i++)
                 {
-                    jiemian.down d=j.new down(dizhi+"/raw/main"+shao[i],wjml+"/mods/"+shao[i],i+1,shao.length);
+                    jiemian.down d=j.new down(j.getdowndz(modary,shao[i]),wjml+"/mods/"+shao[i],i+1,shao.length);
                     d.start();
                 }
             }
