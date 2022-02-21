@@ -50,7 +50,7 @@ public class yunxing {
                 logger.info("处理少");
                 for(int i=0;i< shao.length;i++)
                 {
-                    jiemian.down d=j.new down(j.getdowndz(modary,shao[i]),wjml+"/mods/"+shao[i],i+1,shao.length);
+                    jiemian.down d=j.new down(j.getdowndz(modary,shao[i],jsonx),wjml+"/mods/"+shao[i],i+1,shao.length);
                     d.start();
                 }
             }

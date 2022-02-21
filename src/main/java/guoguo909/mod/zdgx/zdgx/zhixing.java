@@ -29,11 +29,12 @@ public class zhixing extends Thread
 {
     protected static final Logger logger = LogManager.getLogger(zhixing.class);
     public String GameVersionName;
+    public String loder;
     public void run() {
         try
         {
             logger.info("开始执行");
-            int banben=5;
+            int banben=6;
             jiemian j=new jiemian();
             logger.info("初始化完毕");
             int gitbanban=Integer.parseInt(j.getgitbanben("z2bguoguo/zdgxmc"));
@@ -55,7 +56,7 @@ public class zhixing extends Thread
             {
                 logger.info("json.json不存在");
                 json.createNewFile();
-                j.jsoncj(json);
+                j.jsoncj(json,loder,GameVersionName);
                 JOptionPane.showMessageDialog(null, "请输入地址", "错误", JOptionPane.ERROR_MESSAGE);
                 System.exit(0);
             }

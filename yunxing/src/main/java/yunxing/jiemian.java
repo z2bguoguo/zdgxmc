@@ -204,15 +204,99 @@ public class jiemian {
         }
         return (r);
     }
-    public String getdowndz(JSONArray modary,String filename)
+    public String getdowndz(JSONArray modary,String filename,JSONObject json)
     {
         for (int i=0;i<modary.size();i++)
         {
-            if (modary.getJSONObject(i).getString("filename").equals(filename))
+            JSONObject j=modary.getJSONObject(i);
+            if (j.getString("filename").equals(filename))
             {
-                return(modary.getJSONObject(i).getString("download"));
+                switch (j.getString("method"))
+                {
+                    case "direct":
+                        return(j.getString("download"));
+                    case "curseforge":
+                        curseforge cu=new curseforge();
+                        String GameVersionTypeId= cu.GetGameVersionTypeId(json.getString("GameVersionName"));
+                        JSONObject moddata=cu.getmoddata(j.getString("modid"),GameVersionTypeId);
+                        JSONArray modaryx=cu.getmodary(moddata);
+                        JSONObject modfiledata=cu.getmodfiledata(modaryx,j.getString("modname"),json.getString("loder"));
+                        return(cu.getxzdz(modfiledata));
+                }
             }
         }
         return("");
+    }
+    public static class curseforge
+    {
+        public String getcuurl(String urls)
+        {
+            try
+            {
+                URL url=new URL(urls);
+                HttpURLConnection b=(HttpURLConnection) url.openConnection();
+                b.addRequestProperty("x-api-key","$2a$10$qgRhXiDWOmZq.60.6Lejlu8tkZiVf0otjILqJ2i8OmK9pT/ag5Ugi");
+                BufferedReader reader=new BufferedReader(new InputStreamReader(b.getInputStream(),"UTF-8"));
+                String line;
+                String s="";
+                while((line=reader.readLine())!=null)
+                {
+                    s=s+line;
+                }
+                reader.close();
+                return (s);
+            }
+            catch (MalformedURLException e)
+            {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+                return ("");
+            }
+            catch (IOException e)
+            {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+                return ("");
+            }
+        }
+        public JSONObject getmoddata(String modid,String gameVersionTypeId)
+        {
+            JSONObject json=JSONObject.parseObject(getcuurl("https://api.curseforge.com/v1/mods/"+modid+"/files?gameVersionTypeId="+gameVersionTypeId));
+            return(json);
+        }
+        public JSONArray getmodary(JSONObject moddata)
+        {
+            return(moddata.getJSONObject("data").getJSONArray("latestFiles"));
+        }
+        public String GetGameVersionTypeId(String GameVersionName)
+        {
+            JSONArray j;
+            JSONArray vj=JSONObject.parseObject(getcuurl("https://api.curseforge.com/v1/games/432/versions")).getJSONArray("data");
+            for(int i=0;i<vj.size();i++)
+            {
+                j=vj.getJSONObject(i).getJSONArray("versions");
+                if ( j.contains(GameVersionName) && j.size()<20)
+                {
+                    return(vj.getJSONObject(i).getString("type"));
+                }
+            }
+            return("");
+        }
+        public JSONObject getmodfiledata(JSONArray modary,String modname,String loder)//loder是mod加载器
+        {
+            for(int i=0;i<modary.size();i++)
+            {
+                JSONObject j=modary.getJSONObject(i);
+                if(j.getString("displayName").equals(modname) && j.getJSONArray("gameVersions").contains(loder))
+                {
+                    return(j);
+                }
+            }
+            return(null);
+        }
+        public String getxzdz(JSONObject modfiledata)//获取下载地址
+        {
+            return(modfiledata.getString("downloadUrl"));
+        }
     }
 }

@@ -206,13 +206,15 @@ public class jiemian {
         String url="https://github.com/"+repos+"/releases/download/"+name+"/"+filename;
         return (url);
     }
-    public void jsoncj(File f)
+    public void jsoncj(File f,String loder,String GameVersionName)
     {
         try
         {
             JSONObject js=new JSONObject();
             js.put("address","");
             js.put("enable",true);
+            js.put("loder",loder);
+            js.put("GameVersionName",GameVersionName);
             FileWriter jsons=new FileWriter(f);
             jsons.write(JSONObject.toJSONString(js,true));
             jsons.flush();
