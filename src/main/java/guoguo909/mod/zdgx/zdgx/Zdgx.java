@@ -15,7 +15,7 @@ public class Zdgx implements ModInitializer {
             System.setProperty("java.awt.headless", "false");
             zhixing zx=new zhixing();
             zx.GameVersionName=MinecraftVersion.create().getName();
-            zx.loder="fabric";
+            zx.loder="Fabric";
             zx.start();
 
         }

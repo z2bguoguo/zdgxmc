@@ -206,24 +206,34 @@ public class jiemian {
     }
     public String getdowndz(JSONArray modary,String filename,JSONObject json)
     {
-        for (int i=0;i<modary.size();i++)
+        try
         {
-            JSONObject j=modary.getJSONObject(i);
-            if (j.getString("filename").equals(filename))
+            for (int i=0;i<modary.size();i++)
             {
-                switch (j.getString("method"))
+                JSONObject j=modary.getJSONObject(i);
+                if (j.getString("filename").equals(filename))
                 {
-                    case "direct":
-                        return(j.getString("download"));
-                    case "curseforge":
-                        curseforge cu=new curseforge();
-                        String GameVersionTypeId= cu.GetGameVersionTypeId(json.getString("GameVersionName"));
-                        JSONObject moddata=cu.getmoddata(j.getString("modid"),GameVersionTypeId);
-                        JSONArray modaryx=cu.getmodary(moddata);
-                        JSONObject modfiledata=cu.getmodfiledata(modaryx,j.getString("modname"),json.getString("loder"));
-                        return(cu.getxzdz(modfiledata));
+                    switch (j.getString("method"))
+                    {
+                        case "direct":
+                            return(j.getString("download"));
+                        case "curseforge":
+                            curseforge cu=new curseforge();
+                            String GameVersionTypeId= cu.GetGameVersionTypeId(json.getString("GameVersionName"));
+                            JSONObject moddata=cu.getmoddata(j.getString("modid"),GameVersionTypeId);
+                            JSONArray modaryx=cu.getmodary(moddata);
+                            JSONObject modfiledata=cu.getmodfiledata(modaryx,j.getString("modname"),json.getString("loder"));
+                            return(cu.getxzdz(modfiledata));
+                    }
                 }
             }
+        }
+        catch (Exception e) {
+            System.out.println("错误报告");
+            logger.error(e);
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+            System.out.println("错误报告尾");
         }
         return("");
     }
@@ -266,7 +276,7 @@ public class jiemian {
         }
         public JSONArray getmodary(JSONObject moddata)
         {
-            return(moddata.getJSONObject("data").getJSONArray("latestFiles"));
+            return(moddata.getJSONArray("data"));
         }
         public String GetGameVersionTypeId(String GameVersionName)
         {

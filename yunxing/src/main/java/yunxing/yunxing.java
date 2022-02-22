@@ -60,6 +60,7 @@ public class yunxing {
 //
         } catch (Exception e) {
             System.out.println("错误报告");
+            logger.error(e);
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
             System.out.println("错误报告尾");
