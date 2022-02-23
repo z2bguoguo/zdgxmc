@@ -48,10 +48,19 @@ public class yunxing {
             if(shao.length!=0)
             {
                 logger.info("处理少");
+                String downdz;
                 for(int i=0;i< shao.length;i++)
                 {
-                    jiemian.down d=j.new down(j.getdowndz(modary,shao[i],jsonx),wjml+"/mods/"+shao[i],i+1,shao.length);
-                    d.start();
+                    downdz=j.getdowndz(modary,shao[i],jsonx);
+                    if(!downdz.equals(""))
+                    {
+                        jiemian.down d=j.new down(downdz,wjml+"/mods/"+shao[i],i+1,shao.length);
+                        d.start();
+                    }
+                    else
+                    {
+                        logger.info("用户不同意下载不安全的链接："+shao[i]);
+                    }
                 }
             }
             JOptionPane.showMessageDialog(null, "更新完毕");

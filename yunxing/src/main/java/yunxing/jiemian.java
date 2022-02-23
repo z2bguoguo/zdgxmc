@@ -22,6 +22,7 @@ public class jiemian {
     Container con =a.getContentPane();
     JProgressBar jindu=new JProgressBar(0,100);
     JProgressBar jindu2=new JProgressBar(0,100);
+    int downdirect=-1;
     public void chuangjian()
     {
         try
@@ -216,7 +217,16 @@ public class jiemian {
                     switch (j.getString("method"))
                     {
                         case "direct":
-                            return(j.getString("download"));
+                            if (downdirect==-1)
+                            {
+                                String[] baq={"是","否"};
+                                downdirect= JOptionPane.showOptionDialog(null, "" +"是否允许从不安全的地址下载mod", "警告", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null,baq, baq[0]);
+                            }
+                            if (downdirect==0)
+                            {
+                                return(j.getString("download"));
+                            }
+                            return("");
                         case "curseforge":
                             curseforge cu=new curseforge();
                             String GameVersionTypeId= cu.GetGameVersionTypeId(json.getString("GameVersionName"));

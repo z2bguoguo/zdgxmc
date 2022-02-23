@@ -34,7 +34,7 @@ public class zhixing extends Thread
         try
         {
             logger.info("开始执行");
-            int banben=7;
+            int banben=8;
             jiemian j=new jiemian();
             logger.info("初始化完毕");
             int gitbanban=Integer.parseInt(j.getgitbanben("z2bguoguo/zdgxmc"));
