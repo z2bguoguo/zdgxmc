@@ -1,5 +1,6 @@
 package guoguo909.mod.zdgx.zdgx.client;
 
+import com.alibaba.fastjson.JSONObject;
 import guoguo909.mod.zdgx.zdgx.zhixing;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -36,9 +37,15 @@ public class ZdgxClient implements ClientModInitializer {
                     logger.info("收到服务器发送的链接："+bufs);
                     String wjml=System.getProperty("user.dir")+"\\zdgx";
                     logger.info("目录："+wjml);
-                    File json=new File(wjml+"/json.txt");
+                    File json=new File(wjml+"/json.json");
+                    FileReader jsonsx=new FileReader(json);
+                    char jsonr[]=new char[1024];
+                    int jsonlen= jsonsx.read(jsonr);
+                    String jsonn=new String(jsonr,0,jsonlen);
+                    JSONObject jsonx=JSONObject.parseObject(jsonn);
+                    jsonx.put("address",bufs);
                     FileWriter jsons=new FileWriter(json);
-                    jsons.write(bufs);
+                    jsons.write(JSONObject.toJSONString(jsonx,true));
                     jsons.flush();
                     jsons.close();
                 }

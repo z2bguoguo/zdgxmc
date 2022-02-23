@@ -1,5 +1,6 @@
 package guoguo909.mod.zdgx.zdgx.server;
 
+import com.alibaba.fastjson.JSONObject;
 import guoguo909.mod.zdgx.zdgx.client.ZdgxClient;
 import guoguo909.mod.zdgx.zdgx.zhixing;
 import io.netty.buffer.ByteBuf;
@@ -34,11 +35,13 @@ public class ZdgxServer implements DedicatedServerModInitializer
         {
             String wjml=System.getProperty("user.dir")+"\\zdgx";
             logger.info("目录："+wjml);
-            File json=new File(wjml+"/json.txt");
+            File json=new File(wjml+"/json.json");
             FileReader jsons=new FileReader(json);
             char jsonr[]=new char[1024];
             int jsonlen= jsons.read(jsonr);
-            dizhi=new String(jsonr,0,jsonlen);
+            String dizhix=new String(jsonr,0,jsonlen);
+            JSONObject jsonx=JSONObject.parseObject(dizhix);
+            dizhi=jsonx.getString("address");
             logger.info("服务器json地址："+dizhi);
             jsons.close();
             Identifier itf=new Identifier("zdgx");
