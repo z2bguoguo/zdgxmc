@@ -24,8 +24,10 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.2.79'
     modImplementation 'com.alibaba:fastjson:1.2.79'
     include 'com.alibaba:fastjson:1.2.79'
+    implementation files('D:\\mc\\modzhizuo\\zdgx\\zdgxzhixing\\target\\zdgxzhixing-1.0-SNAPSHOT.jar')
+    modImplementation  files('D:\\mc\\modzhizuo\\zdgx\\zdgxzhixing\\target\\zdgxzhixing-1.0-SNAPSHOT.jar')
+    include 'z2bguoguo:1.0-SNAPSHOT'
 }
-
 processResources {
     inputs.property "version", project.version
     filteringCharset "UTF-8"

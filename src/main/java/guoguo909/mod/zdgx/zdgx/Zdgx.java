@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.io.File;
 import java.io.FileReader;
 import net.minecraft.MinecraftVersion;
+import z2bguoguo.zhixing;
+
 public class Zdgx implements ModInitializer {
     @Override
     public void onInitialize()
