@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <properties>
+        <!-- 导出文件夹和文件名的变量定义 -->
+        <property name="LOG_FOLDER">.\zdgx</property>
+        <property name="FILE_NAME">log</property>
+    </properties>
+
+    <!-- Appenders:输出的目的地 -->
+    <!-- 三种常用的节点：
+        Console：输出到控制台
+        File：输出到文件
+        RollingFile：超过指定大小时，自动创建新的的Appender
+    -->
+    <Appenders>
+        <!-- target：SYSTEM_OUT/SYSTEM_ERR。默认：SYSTEM_OUT。 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!-- pattern:输出内容的格式 -->
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5p %l - %m%n" />
+        </Console>
+
+        <RollingFile name="RollingFile" fileName="${LOG_FOLDER}/${FILE_NAME}.log"
+                     filePattern="${LOG_FOLDER}/$${date:yyyy-MM}/${FILE_NAME}-%d{yyyy-MM-dd HH-mm}-%i.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5p %l - %m%n"/>
+            <!-- Policies：触发浮动的策略 -->
+            <Policies>
+                <!-- TimeBasedTriggeringPolicy:时间rollover。 -->
+                <!-- interval属性:根据日期格式中的最小时间单位来决定应该多久发生一次rollover。默认值为1。-->
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <!-- SizeBasedTriggeringPolicy：文件大小rollover。-->
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <!-- Strategy：执行滚动的策略 -->
+            <!-- 两种：DefaultRolloverStrategy/DirectWriteRolloverStrategy -->
+            <!-- DefaultRolloverStrategy:设置最多备份多少本log文件（其余的删除）。 -->
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- Root节点：指定项目的根日志。
+            （如果没有单独指定Logger，就会默认使用Root）
+            （没有name和additivity属性） -->
+        <!-- level属性：日志输出级别。
+            共有8个级别，按照从低到高为：All < Trace < Debug < Info < Warn < Error < Fatal < OFF -->
+        <Root level="info">
+            <!-- AppenderRef：指定该日志输出到哪个Appender -->
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile" />
+        </Root>
+
+        <!-- Logger节点：单独指定日志的形式。（可以为指定包下的class指定不同的日志级别） -->
+        <!-- name属性：指定该Logger所适用的类或者类所在的包
+                level属性:日志输出级别。默认为ERROR。
+                additivity： (true：遵循父类的Appender。false：不遵循父类的Appender)。默认值true。 -->
+        <Logger name="abc.Main" level="trace" additivity="false">
+            <!-- AppenderRef节点:指定该日志输出到哪个Appender -->
+            <!-- 如果没有指定AppenderRef，默认使用Root。
+                 如果指定了，那么会在指定的这个Appender和Root的Appender中都会输出。
+                 可以设置Logger的additivity="false"，使得只在自定义的Appender中输出。
+             -->
+            <AppenderRef ref="Console" level="debug" />
+            <AppenderRef ref="RollingFile" level="info" />
+        </Logger>
+    </Loggers>
+</Configuration>
