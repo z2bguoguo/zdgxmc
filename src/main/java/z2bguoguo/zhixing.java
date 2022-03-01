@@ -70,7 +70,7 @@ public class zhixing extends Thread
                 if(gitbanban>banben)
                 {
                     logger.info("更新zdgx");
-                    String gxdizhi=j.getgitxiazai("z2bguoguo/zdgxmc","zdgx"+String.valueOf(gitbanban)+".jar");
+                    String gxdizhi=j.getgitxiazai("z2bguoguo/zdgxmc","zdgx"+String.valueOf(gitbanban)+loder+".jar");
                     logger.info("gxdizhi："+gxdizhi);
                     jiemian.down downs=j.new down(gxdizhi, modml+"/"+"zdgx"+String.valueOf(gitbanban)+".jar", 1,1);
                     downs.run();
