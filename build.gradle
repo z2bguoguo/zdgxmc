@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'z2bguoguo'
-version '1'
+version '9'
 repositories {
     mavenCentral()
 }
@@ -28,7 +28,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'z2bguoguo'
             artifactId = 'zhixing'
-            version = '1'
+            version = getVersion()
 
             from components.java
         }
