@@ -122,6 +122,8 @@ repositories {
     // flatDir {
     //     dir 'libs'
     // }
+    mavenLocal()
+    mavenCentral()
 }
 
 dependencies {
@@ -129,9 +131,6 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.18.1-39.0.85'
-    jar{
-        from { configurations.compileClasspath.findAll { it.name.contains('zdgx') }.collect {  zipTree(it) } }
-    }
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
     // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
@@ -143,7 +142,12 @@ dependencies {
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    implementation files('D:\\mc\\modzhizuo\\zdgx\\zdgxzhixing\\build\\libs\\zdgxzhixing-1-all.jar')
+    jar {
+        from {
+            configurations.compileClasspath.findAll { (it.name.contains('zhixing')||it.name.contains('fastjson')) }.collect {  zipTree(it) } }
+    }
+    implementation 'z2bguoguo:zhixing:1'
+    implementation 'com.alibaba:fastjson:1.2.79'
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
