@@ -1,11 +1,11 @@
 plugins {
     id 'java'
-    id "com.github.johnrengelman.shadow" version "7.1.2"
+   //id "com.github.johnrengelman.shadow" version "7.1.2"
+    id 'maven-publish'
 }
 
 group 'z2bguoguo'
 version '1'
-
 repositories {
     mavenCentral()
 }
@@ -23,9 +23,21 @@ tasks.withType(JavaCompile) {
 test {
     useJUnitPlatform()
 }
-shadowJar {
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'z2bguoguo'
+            artifactId = 'zhixing'
+            version = '1'
+
+            from components.java
+        }
+    }
+}
+/*shadowJar {
     dependencies {
         exclude(dependency('org.apache.logging.log4j:log4j-api:2.17.2'))
         exclude(dependency('org.apache.logging.log4j:log4j-core:2.17.2'))
     }
 }
+ */
