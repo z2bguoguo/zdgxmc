@@ -11,6 +11,8 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
+    mavenLocal()
+    mavenCentral()
 }
 
 dependencies {
@@ -24,9 +26,9 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.2.79'
     modImplementation 'com.alibaba:fastjson:1.2.79'
     include 'com.alibaba:fastjson:1.2.79'
-    implementation files('D:\\mc\\modzhizuo\\zdgx\\zdgxzhixing\\build\\libs\\zdgxzhixing-1-all.jar')
-    modImplementation  files('D:\\mc\\modzhizuo\\zdgx\\zdgxzhixing\\build\\libs\\zdgxzhixing-1-all.jar')
-    include 'z2bguoguo:1'
+    implementation 'z2bguoguo:zhixing:1'
+    modImplementation  'z2bguoguo:zhixing:1'
+    include 'z2bguoguo:zhixing:1'
 }
 processResources {
     inputs.property "version", project.version
