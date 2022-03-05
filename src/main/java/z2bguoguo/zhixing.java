@@ -14,11 +14,11 @@ public class zhixing extends Thread
     protected static final Logger logger = LogManager.getLogger(zhixing.class);
     public String GameVersionName;
     public String loder;
+    public int banben=9;
     public void run() {
         try
         {
             logger.info("开始执行");
-            int banben=8;
             jiemian j=new jiemian();
             logger.info("初始化完毕");
             int gitbanban=Integer.parseInt(j.getgitbanben("z2bguoguo/zdgxmc"));
