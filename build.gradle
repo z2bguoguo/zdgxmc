@@ -146,7 +146,7 @@ dependencies {
         from {
             configurations.compileClasspath.findAll { (it.name.contains('zhixing')||it.name.contains('fastjson')) }.collect {  zipTree(it) } }
     }
-    implementation 'z2bguoguo:zhixing:1'
+    implementation 'z2bguoguo:zhixing:9'
     implementation 'com.alibaba:fastjson:1.2.79'
 }
 
