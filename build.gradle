@@ -26,9 +26,9 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.2.79'
     modImplementation 'com.alibaba:fastjson:1.2.79'
     include 'com.alibaba:fastjson:1.2.79'
-    implementation 'z2bguoguo:zhixing:1'
-    modImplementation  'z2bguoguo:zhixing:1'
-    include 'z2bguoguo:zhixing:1'
+    implementation 'z2bguoguo:zhixing:9'
+    modImplementation  'z2bguoguo:zhixing:9'
+    include 'z2bguoguo:zhixing:9'
 }
 processResources {
     inputs.property "version", project.version
