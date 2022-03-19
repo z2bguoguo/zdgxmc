@@ -1,18 +1,12 @@
 package z2bguoguo.zdgx;
 
-import com.mojang.authlib.minecraft.client.MinecraftClient;
-import net.minecraft.*;
-import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.versions.mcp.MCPVersion;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import z2bguoguo.*;
 import javax.swing.*;
-import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("zdgx")
@@ -20,6 +14,8 @@ public class Zdgx {
 
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
+    //private kehuduanwangluo w=new kehuduanwangluo();
+   // private fuwuqiwangluo f=new fuwuqiwangluo();
     public Zdgx() {
         // Register the setup method for modloading
         //FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
@@ -30,6 +26,7 @@ public class Zdgx {
 
         // Register ourselves for server and other game events we are interested in
         //MinecraftForge.EVENT_BUS.register(this);
+        //MinecraftForge.EVENT_BUS.register(f);
         try
         {
             System.setProperty("java.awt.headless", "false");
@@ -37,7 +34,7 @@ public class Zdgx {
             zx.GameVersionName=MCPVersion.getMCVersion();
             zx.loder="Forge";
             zx.start();
-
+            //MinecraftForge.EVENT_BUS.register(f.getClass());
         }
         catch (Exception e) {
             System.out.println("错误报告");
