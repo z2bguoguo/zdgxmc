@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.io.File;
 import java.io.FileReader;
 import java.util.Arrays;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +13,7 @@ public class zhixing extends Thread
     protected static final Logger logger = LogManager.getLogger(zhixing.class);
     public String GameVersionName;
     public String loder;
-    public int banben=9;
+    public int banben=10;
     public void run() {
         try
         {
@@ -26,11 +25,23 @@ public class zhixing extends Thread
             String wjml=System.getProperty("user.dir")+"\\zdgx";
             logger.info("目录："+wjml);
             File wjmlcz=new File(wjml);
+            String cjml=wjml+"\\plugins";
             if (!wjmlcz .exists())
             {
                 logger.info("目录不存在，正在创建目录");
                 wjmlcz.mkdir();
             }
+            File cjmlxx=new File(cjml);
+            if (!cjmlxx .exists()) {
+                logger.info("插件目录不存在，正在创建目录");
+                cjmlxx.mkdir();
+            }
+            logger.info("初始化插件");
+            chajian chaj=new chajian(cjml);
+            logger.info("插件初始化完毕");
+            logger.info("执行插件初始化命令");
+            chaj.zhixing("Init");
+            logger.info("插件初始化命令执行完毕");
             System.out.println(wjml);
             File modmlf=new File(wjml);
             String modml= modmlf.getParent()+"/mods";
