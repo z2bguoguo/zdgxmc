@@ -18,8 +18,14 @@ public class yunxing {
             logger.info("开始执行");
             jiemian j=new jiemian();
             File wjml=new File(System.getProperty("user.dir"));
+            String cjml=wjml+"\\zdgx\\plugins";
             logger.info("目录："+wjml);
             logger.info("初始化完毕");
+            chajian chaj=new chajian(cjml);
+            logger.info("插件初始化完毕");
+            logger.info("执行插件初始化命令");
+            chaj.zhixing("Init");
+            logger.info("插件初始化命令执行完毕");
             File json=new File(wjml+"/zdgx/json.json");
             FileReader jsons=new FileReader(json);
             char jsonr[]=new char[1024];
