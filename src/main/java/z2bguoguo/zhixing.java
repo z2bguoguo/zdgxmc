@@ -11,8 +11,8 @@ import org.apache.logging.log4j.Logger;
 public class zhixing extends Thread
 {
     protected static final Logger logger = LogManager.getLogger(zhixing.class);
-    public String GameVersionName;
-    public String loder;
+    public String GameVersionName="";
+    public String loder="";
     public int banben=10;
     public void run() {
         try
@@ -66,7 +66,7 @@ public class zhixing extends Thread
             if (jsonx.getBoolean("enable"))
             {
                 jiemian.curseforge cu=new jiemian.curseforge();
-                String GameVersionTypeId=cu.GetGameVersionTypeId(GameVersionName);
+                String GameVersionTypeId=cu.GetGameVersionTypeId(jsonx.getString("GameVersionName"));
                 logger.info("GameVersionTypeId："+GameVersionTypeId);
                 JSONArray modary= j.getmodary(j.geturl(dizhi));
                 String[] b=j.getmodfilenames(modary);//云端文件列表
@@ -78,7 +78,7 @@ public class zhixing extends Thread
                 String[] shao=j.bendiduo(b,c,modml);//本地文件少的
                 logger.info("本地文件少的："+ Arrays.toString(shao));
                 File yunxing=new File(wjml+"/yunxing.jar");
-                if(gitbanban>banben)
+               /* if(gitbanban>banben)
                 {
                     logger.info("更新zdgx");
                     String gxdizhi=j.getgitxiazai("z2bguoguo/zdgxmc","zdgx"+String.valueOf(gitbanban)+loder+".jar");
@@ -87,7 +87,7 @@ public class zhixing extends Thread
                     downs.run();
                     File ziji = new File(modml+"/"+"zdgx"+String.valueOf(banben)+".jar");
                     ziji.renameTo(new File(modml+"/"+"zdgx"+String.valueOf(banben)+".jar.duo"));
-                }
+                }*/
                 if (!yunxing.exists() || gitbanban>banben)
                 {
                     logger.info("下载yunxing.jar");
