@@ -1,0 +1,103 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "z2bguoguo",
+    "module": "zhixing",
+    "version": "10",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 16,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "zhixing-10.jar",
+          "url": "zhixing-10.jar",
+          "size": 16057,
+          "sha512": "91974a4cf2b7482e34a663feeee31b68e41b8f162b358897d7fe2f0d18f602aae869fb198e2f2ba67cd88a6e58c6c1011307804b9324d24ce48b5a0553238f96",
+          "sha256": "edda84b6b5aa70f487a21c635cbed572c0e9c6affef0c58ecc7abeeb8cf61ec0",
+          "sha1": "b3c843ed22779f90cd9bd09d619c55b6c1ec5cd6",
+          "md5": "312ad669a358a52c66068f6a1977a866"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 16,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.apache.logging.log4j",
+          "module": "log4j-api",
+          "version": {
+            "requires": "2.17.2"
+          }
+        },
+        {
+          "group": "org.apache.logging.log4j",
+          "module": "log4j-core",
+          "version": {
+            "requires": "2.17.2"
+          }
+        },
+        {
+          "group": "com.alibaba",
+          "module": "fastjson",
+          "version": {
+            "requires": "1.2.79"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "zhixing-10.jar",
+          "url": "zhixing-10.jar",
+          "size": 16057,
+          "sha512": "91974a4cf2b7482e34a663feeee31b68e41b8f162b358897d7fe2f0d18f602aae869fb198e2f2ba67cd88a6e58c6c1011307804b9324d24ce48b5a0553238f96",
+          "sha256": "edda84b6b5aa70f487a21c635cbed572c0e9c6affef0c58ecc7abeeb8cf61ec0",
+          "sha1": "b3c843ed22779f90cd9bd09d619c55b6c1ec5cd6",
+          "md5": "312ad669a358a52c66068f6a1977a866"
+        }
+      ]
+    },
+    {
+      "name": "shadowRuntimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "shadowed",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "zhixing-10-all.jar",
+          "url": "zhixing-10-all.jar",
+          "size": 687519,
+          "sha512": "ab6d6ec574c42932c0b54e195116d8a41aa4518b341825c8e9eb08a92117f7e6529ebb41810f3a9a66a92557a8616801a49f4d9408b8fd548ba96071d83cc178",
+          "sha256": "453bf8b5f33c3d18abb2a132ea4ca50379064062115368fc981c376978b63906",
+          "sha1": "cb916b95aff929ecf58732796abaf6d27d0d8125",
+          "md5": "949ca99dbcf94c2cc9cce0425cde5d86"
+        }
+      ]
+    }
+  ]
+}
