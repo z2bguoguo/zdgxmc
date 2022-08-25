@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "zdgx",
+  "version": "8",
+  "name": "Zdgx自动更新mod",
+  "description": "一个能自动更新mod的mod",
+  "authors": ["中二病guoguo"],
+  "contact": {"sources": "https://github.com/z2bguoguo/zdgxmc","issues": "https://github.com/z2bguoguo/zdgxmc/issues"},
+  "license": "MIT",
+  "icon": "assets/zdgx/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "guoguo909.mod.zdgx.zdgx.client.ZdgxClient"
+    ],
+    "main": [
+      "guoguo909.mod.zdgx.zdgx.Zdgx"
+    ],
+    "server":
+    [
+      "guoguo909.mod.zdgx.zdgx.server.ZdgxServer"
+    ]
+  },
+  "mixins": [
+    "zdgx.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "fabric": "*",
+    "minecraft": "*"
+  }
+}
