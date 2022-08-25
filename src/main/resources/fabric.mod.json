@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "zdgx",
+  "version": "${version}",
+  "name": "Zdgx",
+  "description": "自动更新mod",
+  "authors": [
+    "z2bguoguo"
+  ],
+  "contact": {
+    "repo": "https://github.com/z2bguoguo/zdgxmc"
+  },
+  "license": "MIT",
+  "icon": "assets/zdgx/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "server": [
+      "z2bguoguo.zdgx.server.ZdgxServer"
+    ],
+    "client": [
+      "z2bguoguo.zdgx.client.ZdgxClient"
+    ],
+    "main": [
+      "z2bguoguo.zdgx.Zdgx"
+    ]
+  },
+  "mixins": [
+    "zdgx.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric": "*",
+    "minecraft": "1.19.2,1.19,1.19.1"
+  }
+}
