@@ -15,7 +15,7 @@ public class zhixing extends Thread
     protected static final Logger logger = LogManager.getLogger(zhixing.class);
     public String GameVersionName="";
     public String loder="";
-    public int banben=10;
+    public int banben=11;
     public void run() {
         try
         {
