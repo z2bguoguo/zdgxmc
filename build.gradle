@@ -18,6 +18,7 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-api:2.17.2'
     implementation 'org.apache.logging.log4j:log4j-core:2.17.2'
     implementation 'com.alibaba:fastjson:1.2.79'
+    file("yunxing.jars")
     //implementation 'z2bguoguo:jiekou:1'
 }
 tasks.withType(JavaCompile) {

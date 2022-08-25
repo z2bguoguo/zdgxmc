@@ -2,7 +2,9 @@ package z2bguoguo;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.util.Arrays;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -67,6 +69,7 @@ public class zhixing extends Thread
             logger.info("json地址："+dizhi);
             chaj.zhixing("Address",dizhi);
             logger.info("插件获取地址命令执行完毕");
+            logger.info("启用:"+jsonx.getBoolean("enable"));
             if (jsonx.getBoolean("enable"))
             {
                 jiemian.curseforge cu=new jiemian.curseforge();
@@ -82,23 +85,30 @@ public class zhixing extends Thread
                 String[] shao=j.bendiduo(b,c,modml);//本地文件少的
                 logger.info("本地文件少的："+ Arrays.toString(shao));
                 File yunxing=new File(wjml+"/yunxing.jar");
-               /* if(gitbanban>banben)
+                if (jsonx.getBoolean("AutoUpdate"))
                 {
-                    logger.info("更新zdgx");
-                    String gxdizhi=j.getgitxiazai("z2bguoguo/zdgxmc","zdgx"+String.valueOf(gitbanban)+loder+".jar");
-                    logger.info("gxdizhi："+gxdizhi);
-                    jiemian.down downs=j.new down(gxdizhi, modml+"/"+"zdgx"+String.valueOf(gitbanban)+".jar", 1,1);
-                    downs.run();
-                    File ziji = new File(modml+"/"+"zdgx"+String.valueOf(banben)+".jar");
-                    ziji.renameTo(new File(modml+"/"+"zdgx"+String.valueOf(banben)+".jar.duo"));
-                }*/
-                if (!yunxing.exists() || gitbanban>banben)
+                    if(gitbanban>banben)
+                    {
+                        logger.info("更新zdgx");
+                        String gxdizhi=j.getgitxiazai("z2bguoguo/zdgxmc","zdgxzhixing.jar");
+                        logger.info("gxdizhi："+gxdizhi);
+                        jiemian.down downs=j.new down(gxdizhi, wjml+"\\zdgxzhixing.jar", 1,1);
+                        downs.run();
+                        yunxing.delete();
+                        System.exit(0);
+                    }
+                }
+                if (!yunxing.exists())
                 {
-                    logger.info("下载yunxing.jar");
-                    String gxdizhi=j.getgitxiazai("z2bguoguo/zdgxmc","yunxing.jar");//下载yunxing.jar的地址
-                    logger.info("下载yunxing.jar的地址："+gxdizhi);
-                    jiemian.down downs=j.new down(gxdizhi, yunxing.getPath(), 1,1);
-                    downs.run();
+                    InputStream is = getClass().getResourceAsStream("/yunxing.jars");
+                    FileOutputStream fos = new FileOutputStream(yunxing);
+                    byte[] bx = new byte[1024];
+                    int len;
+                    while ((len=is.read(bx)) != -1) {
+                        fos.write(bx,0,len);// 写入数据
+                    }
+                    is.close();
+                    fos.close();// 保存数据
                 }
                 if (duo.length!=0||shao.length!=0)
                 {
@@ -120,5 +130,10 @@ public class zhixing extends Thread
         }
 
     }
-
+    public void zx(String GameVersionNames,String loders)
+    {
+        GameVersionName=GameVersionNames;
+        loder=loders;
+        super.start();
+    }
 }

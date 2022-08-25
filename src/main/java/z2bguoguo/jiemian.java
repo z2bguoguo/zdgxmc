@@ -210,6 +210,7 @@ public class jiemian {
             js.put("enable",true);
             js.put("loder",loder);
             js.put("GameVersionName",GameVersionName);
+            js.put("AutoUpdate",true);
             FileWriter jsons=new FileWriter(f);
             jsons.write(JSONObject.toJSONString(js,true));
             jsons.flush();
