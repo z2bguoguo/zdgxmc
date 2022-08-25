@@ -221,6 +221,7 @@ public class jiemian {
                             {
                                 String[] baq={"是","否"};
                                 downdirect= JOptionPane.showOptionDialog(null, "" +"是否允许从不安全的地址下载mod", "警告", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null,baq, baq[0]);
+                                return(getdowndz(modary, filename, json));
                             }
                             if (downdirect==0)
                             {

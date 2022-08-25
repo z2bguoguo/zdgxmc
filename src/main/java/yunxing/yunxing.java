@@ -9,9 +9,33 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import z2bguoguo.zhixing;
+
 public class yunxing {
     protected static final Logger logger = LogManager.getLogger(yunxing.class);
     public static void main(String[] args)
+    {
+        if(args.length>=1 && args[0].equals("zx"))
+        {
+            yx();
+
+        }
+        else
+        {
+            try
+            {
+                zhixing zx=new zhixing();
+                zx.start();
+            }
+            catch (Exception e) {
+                System.out.println("错误报告");
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+                System.out.println("错误报告尾");
+            }
+        }
+    }
+    public static void yx()
     {
         try
         {
@@ -24,7 +48,7 @@ public class yunxing {
             chajian chaj=new chajian(cjml);
             logger.info("插件初始化完毕");
             logger.info("执行插件初始化命令");
-            chaj.zhixing("Init");
+            chaj.zhixing("Init","yunxing");
             logger.info("插件初始化命令执行完毕");
             File json=new File(wjml+"/zdgx/json.json");
             FileReader jsons=new FileReader(json);
@@ -34,6 +58,8 @@ public class yunxing {
             JSONObject jsonx=JSONObject.parseObject(jsonn);
             String dizhi=jsonx.getString("address");
             logger.info("json:"+dizhi);
+            chaj.zhixing("Address",dizhi);
+            logger.info("插件获取地址命令执行完毕");
             System.setProperty("java.awt.headless", "false");
             j.chuangjian();
             JSONArray modary=j.getmodary(j.geturl(dizhi));
