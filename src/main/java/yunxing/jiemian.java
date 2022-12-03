@@ -8,9 +8,7 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -115,14 +113,14 @@ public class jiemian {
         }
         return(duo.toArray(new String[0]));
     }
-    public void chuliduo(String[] duo)
+    public void chuliduo(JSONArray duo,String dizhi)
     {
-        for(int i=0;i< duo.length;i++)
+        for(int i=0;i< duo.size();i++)
         {
-            File file = new File(duo[i]);
+            File file = new File(dizhi+duo.getJSONObject(i).getString("name"));
             if(file.getName().substring(0,5).indexOf("zdgx")<0)
             {
-                file.renameTo(new File(duo[i]+".duo"));
+                file.renameTo(new File(dizhi+duo.getJSONObject(i).getString("name")+".duo"));
             }
 
         }
@@ -318,6 +316,69 @@ public class jiemian {
         public String getxzdz(JSONObject modfiledata)//获取下载地址
         {
             return(modfiledata.getString("downloadUrl"));
+        }
+    }
+    public class tcptx
+    {
+        public void servers(String s)
+        {
+            try {
+                ServerSocket serverSocket = new ServerSocket(20534);
+                //2.等待客户端连接
+                Socket socket=serverSocket.accept();
+                //3.获取socket通道的输入流
+                //InputStream in=socket.getInputStream();
+                BufferedReader br=new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                //4.获取socket 通道的输出流
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                //循环读取数据，并拼接到文本域中
+                String line=null;
+                String r=new String();
+                while((line=br.readLine())!=null) {
+                    r=r+line;
+                }
+                System.out.println("接收到客户端消息："+r);
+                bw.write(s);
+                bw.flush();
+                bw.close();
+                br.close();
+                socket.close();
+                serverSocket.close();
+            }catch (Exception e) {
+                System.out.println("错误信息");
+                e.printStackTrace();
+                logger.info(e.getMessage());
+                JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+                System.out.println("错误内容"+e.getMessage());
+            }
+        }
+        public String clients()
+        {
+            try {
+                Socket socket = new Socket("127.0.0.1",20534);
+                //2.获取socket通道 的输入流
+                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                //3.获取socket 通道的输出流
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                //循环读取数据，并拼接到文本域中
+                String line=null;
+                String r=new String();
+                while((line=br.readLine())!=null) {
+                    r=r+line;
+                }
+                System.out.println("接受到服务器消息："+r);
+
+                //4，关闭socket 通道
+                socket.close();
+                return (r);
+            }catch (Exception e) {
+                System.out.println("错误信息");
+                e.printStackTrace();
+                logger.info(e.getMessage());
+                JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+                System.out.println("错误内容"+e.getMessage());
+            }
+            return null;
         }
     }
 }

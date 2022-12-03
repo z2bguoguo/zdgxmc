@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.io.File;
 import java.io.FileReader;
 import java.util.Arrays;
+import java.util.Random;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -18,6 +19,7 @@ public class yunxing {
         if(args.length>=1 && args[0].equals("zx"))
         {
             yx();
+
 
         }
         else
@@ -50,6 +52,9 @@ public class yunxing {
             logger.info("执行插件初始化命令");
             chaj.zhixing("Init","yunxing");
             logger.info("插件初始化命令执行完毕");
+            jiemian.tcptx t=j.new tcptx();
+            String ser=t.clients();
+            logger.info("接收到服务器数据："+ser);
             File json=new File(wjml+"/zdgx/json.json");
             FileReader jsons=new FileReader(json);
             char jsonr[]=new char[1024];
@@ -62,7 +67,7 @@ public class yunxing {
             logger.info("插件获取地址命令执行完毕");
             System.setProperty("java.awt.headless", "false");
             j.chuangjian();
-            JSONArray modary=j.getmodary(j.geturl(dizhi));
+            /*JSONArray modary=j.getmodary(j.geturl(dizhi));
             String[] b= j.getmodfilenames(modary);//云端文件列表
             logger.info("云端文件列表："+ Arrays.toString(b));
             String[] c=j.getwenjian(wjml+"/mods");//本地文件列表
@@ -71,27 +76,41 @@ public class yunxing {
             String[] duo=j.bendiduo(c,b,wjml+"/mods/");//本地文件多出的
             logger.info("本地文件多出的："+ Arrays.toString(duo));
             String[] shao=j.bendiduo(b,c,"");//本地文件少的
-            logger.info("本地文件少的："+ Arrays.toString(shao));
-            if (duo.length!=0)
+            logger.info("本地文件少的："+ Arrays.toString(shao));*/
+
+            JSONObject jsonz=JSONObject.parseObject(ser);
+            JSONArray shaos= jsonz.getJSONArray("shao");
+            JSONArray duos= jsonz.getJSONArray("duo");
+            if (duos.size()!=0)
             {
-                j.chuliduo(duo);
+                j.chuliduo(duos,wjml+"/mods/");
                 logger.info("处理多");
             }
-            if(shao.length!=0)
+            if(shaos.size()!=0)
             {
                 logger.info("处理少");
                 String downdz;
-                for(int i=0;i< shao.length;i++)
+                String names;
+                File cf;
+                Random ran = new Random();
+                for(int i=0;i< shaos.size();i++)
                 {
-                    downdz=j.getdowndz(modary,shao[i],jsonx);
+                    downdz=shaos.getJSONObject(i).getString("downdz");
+                    names=shaos.getJSONObject(i).getString("name");
                     if(!downdz.equals(""))
                     {
-                        jiemian.down d=j.new down(downdz,wjml+"/mods/"+shao[i],i+1,shao.length);
+                        cf=new File(wjml+"/mods/"+names);
+                        while (cf.exists())
+                        {
+                            names=ran.nextInt(9)+names;
+                            cf=new File(wjml+"/mods/"+names);
+                        }
+                        jiemian.down d=j.new down(downdz,wjml+"/mods/"+names,i+1,shaos.size());
                         d.start();
                     }
                     else
                     {
-                        logger.info("用户不同意下载不安全的链接："+shao[i]);
+                        logger.info("用户不同意下载不安全的链接："+names);
                     }
                 }
             }
