@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.HashMap;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +17,7 @@ public class zhixing extends Thread
     protected static final Logger logger = LogManager.getLogger(zhixing.class);
     public String GameVersionName="";
     public String loder="";
-    public int banben=11;
+    public int banben=12;
     public void run() {
         try
         {
@@ -78,16 +80,21 @@ public class zhixing extends Thread
                 JSONArray modary= j.getmodary(j.geturl(dizhi));
                 String[] b=j.getmodfilenames(modary);//云端文件列表
                 logger.info("云端文件列表："+ Arrays.toString(b));
+                HashMap<String,String> yuns=j.getmodmd5(modary);
+                logger.info("云端文件md5列表："+ yuns);
                 String[] c=j.getwenjian(modml);//本地文件列表
                 logger.info("本地文件列表："+ Arrays.toString(c));
-                String[] duo=j.bendiduo(c,b,modml);//本地文件多出的
-                logger.info("本地文件多出的："+ Arrays.toString(duo));
-                String[] shao=j.bendiduo(b,c,modml);//本地文件少的
-                logger.info("本地文件少的："+ Arrays.toString(shao));
+                HashMap<String,String> bendis=j.getwenjianmd5(modml);
+                logger.info("本地文件md5列表："+ bendis);
+                //String[] duo=j.bendiduo(c,b,modml);//本地文件多出的
+                jiemian.cha chas=j.bendicha_md5(bendis,yuns);
+                logger.info("本地文件多出的："+ chas.bendiduo.toString());
+                logger.info("本地文件少的："+ chas.bendishao.toString());
+                //String[] shao=j.bendiduo(b,c,modml);//本地文件少的
                 File yunxing=new File(wjml+"/yunxing.jar");
                 if (jsonx.getBoolean("AutoUpdate"))
                 {
-                    if(gitbanban>banben)
+                    if(gitbanban>banben && tishi("检测到本mod有新版本，是否进行更新并关闭mc"))
                     {
                         logger.info("更新zdgx");
                         String gxdizhi=j.getgitxiazai("z2bguoguo/zdgxmc","zdgxzhixing.jar");
@@ -110,14 +117,21 @@ public class zhixing extends Thread
                     is.close();
                     fos.close();// 保存数据
                 }
-                if (duo.length!=0||shao.length!=0)
+                if (chas.bendishao.size()!=0||chas.bendiduo.size()!=0)
                 {
-                    logger.info("更新mod");
-                    chaj.zhixing("ReadyUpdate");
-                    logger.info("插件准备更新命令执行完毕");
-                    Runtime.getRuntime().exec("java -jar "+wjml+"/yunxing.jar");
-                    System.out.println("java -jar "+wjml+"/yunxing.jar zx");
-                    System.exit(0);
+                    if(tishi("检测mod有更新，是否进行更新并关闭mc"))
+                    {
+                        logger.info("更新mod");
+                        chaj.zhixing("ReadyUpdate");
+                        logger.info("插件准备更新命令执行完毕");
+                        String downjson= j.getdownjson(chas,modary,jsonx);
+                        logger.info("下载json："+downjson);
+                        Runtime.getRuntime().exec("java -jar "+wjml+"/yunxing.jar zx");
+                        System.out.println("java -jar "+wjml+"/yunxing.jar zx");
+                        jiemian.tcptx t=j.new tcptx();
+                        t.servers(downjson);
+                        System.exit(0);
+                    }
                 }
             }
 
@@ -135,5 +149,12 @@ public class zhixing extends Thread
         GameVersionName=GameVersionNames;
         loder=loders;
         super.start();
+    }
+
+    public boolean tishi(String name)
+    {
+        String[] baq={"是","否"};
+        return JOptionPane.showOptionDialog(null, name, "警告", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null,baq, baq[0])==0;
+
     }
 }

@@ -1,18 +1,18 @@
 package z2bguoguo;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.net.*;
+import java.util.*;
 
 public class jiemian {
     protected static final Logger logger = LogManager.getLogger(jiemian.class);
@@ -21,6 +21,7 @@ public class jiemian {
     Container con =a.getContentPane();
     JProgressBar jindu=new JProgressBar(0,100);
     JProgressBar jindu2=new JProgressBar(0,100);
+    int downdirect=-1;
     public void chuangjian()
     {
         try
@@ -95,11 +96,40 @@ public class jiemian {
         }
         return (r);
     }
+    public HashMap<String,String> getmodmd5(JSONArray modary)
+    {
+        HashMap<String,String> r=new HashMap<>();
+        for (int i=0;i<modary.size();i++)
+        {
+            r.put(modary.getJSONObject(i).getString("md5"),modary.getJSONObject(i).getString("filename"));
+        }
+        return (r);
+    }
     public String[] getwenjian(String mulu)
     {
         File dir = new File(mulu);
         String[] children = dir.list();
         return(children);
+    }
+    public HashMap<String,String> getwenjianmd5(String mulu)
+    {
+        try
+        {
+            File dir = new File(mulu);
+            File[] children = dir.listFiles();
+            HashMap<String,String> r=new HashMap<>();
+            for(File i : children)
+            {
+                r.put( DigestUtils.md5Hex(new FileInputStream(i)),i.getName());
+            }
+            return(r);
+        } catch (Exception e) {
+            System.out.println("错误信息");
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+            System.out.println("错误内容"+e.getMessage());
+        }
+        return null;
     }
     public boolean cunzaiarray(String[] a,String b)
     {
@@ -126,6 +156,32 @@ public class jiemian {
             }
         }
         return(duo.toArray(new String[0]));
+    }
+    public class cha
+    {
+        public HashMap<String,String> bendiduo;
+        public HashMap<String,String> bendishao;
+        cha(HashMap<String,String> duo,HashMap<String,String> shao)
+        {
+            bendiduo=duo;
+            bendishao=shao;
+        }
+    }
+    //0为本地多的，1为本地少的,key为md5，value为name
+    public cha bendicha_md5(HashMap<String,String> bendi,HashMap<String,String> yun)
+    {
+        HashMap<String,String> bendis=bendi;
+        HashMap<String,String> yuns=yun;
+        for(Iterator<String> iterator = yuns.keySet().iterator(); iterator.hasNext();)
+        {
+            String a=iterator.next();
+            if(bendis.containsKey(a))
+            {
+                bendis.remove(a);
+                iterator.remove();
+            }
+        }
+        return new cha(bendis,yuns);
     }
     public void chuliduo(String[] duo)
     {
@@ -224,6 +280,73 @@ public class jiemian {
         }
 
     }
+    public String getdowndz(JSONArray modary,String filename,JSONObject json)
+    {
+        try
+        {
+            for (int i=0;i<modary.size();i++)
+            {
+                JSONObject j=modary.getJSONObject(i);
+                if (j.getString("filename").equals(filename))
+                {
+                    switch (j.getString("method"))
+                    {
+                        case "direct":
+                            if (downdirect==-1)
+                            {
+                                String[] baq={"是","否"};
+                                downdirect= JOptionPane.showOptionDialog(null, "" +"是否允许从不安全的地址下载mod", "警告", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null,baq, baq[0]);
+                                return(getdowndz(modary, filename, json));
+                            }
+                            if (downdirect==0)
+                            {
+                                return(j.getString("download"));
+                            }
+                            return("");
+                        case "curseforge":
+                            curseforge cu=new curseforge();
+                            String GameVersionTypeId= cu.GetGameVersionTypeId(json.getString("GameVersionName"));
+                            JSONObject moddata=cu.getmoddata(j.getString("modid"),GameVersionTypeId);
+                            JSONArray modaryx=cu.getmodary(moddata);
+                            JSONObject modfiledata=cu.getmodfiledata(modaryx,j.getString("modname"),json.getString("loder"));
+                            return(cu.getxzdz(modfiledata));
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println("错误报告");
+            logger.error(e);
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+            System.out.println("错误报告尾");
+        }
+        return("");
+    }
+    public String getdownjson(cha chas,JSONArray modary,JSONObject json)
+    {
+        JSONArray r=new JSONArray();
+        JSONObject x=new JSONObject();
+        JSONObject re=new JSONObject();
+        r.clear();
+        for (String i : chas.bendiduo.values())
+        {
+            x.clear();
+            x.put("name",i);
+            r.add(x);
+        }
+        re.put("duo",r);
+        r.clear();
+        for (String i : chas.bendishao.values())
+        {
+            x.clear();
+            x.put("name",i);
+            x.put("downdz",getdowndz(modary,i,json));
+            r.add(x);
+        }
+        re.put("shao",r);
+        return(JSON.toJSONString(re, SerializerFeature.DisableCircularReferenceDetect));
+    }
     public static class curseforge
     {
         public String getcuurl(String urls)
@@ -294,6 +417,73 @@ public class jiemian {
         public String getxzdz(JSONObject modfiledata)//获取下载地址
         {
             return(modfiledata.getString("downloadUrl"));
+        }
+    }
+    public class tcptx
+    {
+        public void servers(String s)
+        {
+            try {
+                ServerSocket serverSocket = new ServerSocket(20534);
+                //2.等待客户端连接
+                System.out.println("服务器创建完毕");
+                Socket socket=serverSocket.accept();
+                System.out.println("客户端已连接");
+                //3.获取socket通道的输入流
+                //InputStream in=socket.getInputStream();
+                /*BufferedReader br=new BufferedReader(new InputStreamReader(socket.getInputStream()));*/
+                //4.获取socket 通道的输出流
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                PrintWriter pw = new PrintWriter(socket.getOutputStream());
+                //循环读取数据，并拼接到文本域中
+                /*String line=null;
+                String r=new String();
+                while((line=br.readLine())!=null) {
+                    r=r+line;
+                }
+                System.out.println("接收到客户端消息："+r);*/
+                System.out.println("向服务器发送："+s);
+               // bw.write(s);
+                //bw.flush();
+                //bw.close();
+                //br.close();
+                pw.print(s);
+                pw.flush();
+                socket.close();
+                serverSocket.close();
+            }catch (Exception e) {
+                System.out.println("错误信息");
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+                System.out.println("错误内容"+e.getMessage());
+            }
+        }
+        public String clients()
+        {
+            try {
+                Socket socket = new Socket("127.0.0.1",20534);
+                //2.获取socket通道 的输入流
+                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                //3.获取socket 通道的输出流
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                //循环读取数据，并拼接到文本域中
+                String line=null;
+                String r=new String();
+                while((line=br.readLine())!=null) {
+                    r=r+line;
+                }
+                System.out.println("接受到服务器消息："+r);
+
+                //4，关闭socket 通道
+                socket.close();
+                return (r);
+            }catch (Exception e) {
+                System.out.println("错误信息");
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+                System.out.println("错误内容"+e.getMessage());
+            }
+            return null;
         }
     }
 }
