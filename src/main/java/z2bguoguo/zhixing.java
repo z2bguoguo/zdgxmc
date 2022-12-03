@@ -21,7 +21,6 @@ public class zhixing extends Thread
     public void run() {
         try
         {
-
             logger.info("开始执行");
             jiemian j=new jiemian();
             logger.info("初始化完毕");
