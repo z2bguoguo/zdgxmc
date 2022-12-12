@@ -12,6 +12,7 @@ function opencs()
         };
         x.filename=a[i].name;
         x.download=c+a[i].name;
+        x.md5=SparkMD5.hashBinary(a[i].name);
         jsons.push(x);
     }
     d.innerHTML=JSON.stringify(jsons,null,2);
