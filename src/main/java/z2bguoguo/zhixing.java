@@ -24,8 +24,6 @@ public class zhixing extends Thread
             logger.info("开始执行");
             jiemian j=new jiemian();
             logger.info("初始化完毕");
-            int gitbanban=Integer.parseInt(j.getgitbanben("z2bguoguo/zdgxmc"));
-            logger.info("gitbanban："+String.valueOf(gitbanban));
             String wjml=System.getProperty("user.dir")+"\\zdgx";
             logger.info("目录："+wjml);
             File wjmlcz=new File(wjml);
@@ -72,6 +70,22 @@ public class zhixing extends Thread
             chaj.zhixing("Address",dizhi);
             logger.info("插件获取地址命令执行完毕");
             logger.info("启用:"+jsonx.getBoolean("enable"));
+            File yunxing=new File(wjml+"/yunxing.jar");
+            if (jsonx.getBoolean("AutoUpdate"))
+            {
+                int gitbanban=Integer.parseInt(j.getgitbanben("z2bguoguo/zdgxmc"));
+                logger.info("gitbanban："+String.valueOf(gitbanban));
+                if(gitbanban>banben && tishi("检测到本mod有新版本，是否进行更新并关闭mc"))
+                {
+                    logger.info("更新zdgx");
+                    String gxdizhi=j.getgitxiazai("z2bguoguo/zdgxmc","zdgxzhixing.jar");
+                    logger.info("gxdizhi："+gxdizhi);
+                    jiemian.down downs=j.new down(gxdizhi, wjml+"\\zdgxzhixing.jar", 1,1);
+                    downs.run();
+                    yunxing.delete();
+                    System.exit(0);
+                }
+            }
             if (jsonx.getBoolean("enable"))
             {
                 jiemian.curseforge cu=new jiemian.curseforge();
@@ -91,20 +105,7 @@ public class zhixing extends Thread
                 logger.info("本地文件多出的："+ chas.bendiduo.toString());
                 logger.info("本地文件少的："+ chas.bendishao.toString());
                 //String[] shao=j.bendiduo(b,c,modml);//本地文件少的
-                File yunxing=new File(wjml+"/yunxing.jar");
-                if (jsonx.getBoolean("AutoUpdate"))
-                {
-                    if(gitbanban>banben && tishi("检测到本mod有新版本，是否进行更新并关闭mc"))
-                    {
-                        logger.info("更新zdgx");
-                        String gxdizhi=j.getgitxiazai("z2bguoguo/zdgxmc","zdgxzhixing.jar");
-                        logger.info("gxdizhi："+gxdizhi);
-                        jiemian.down downs=j.new down(gxdizhi, wjml+"\\zdgxzhixing.jar", 1,1);
-                        downs.run();
-                        yunxing.delete();
-                        System.exit(0);
-                    }
-                }
+
                 if (!yunxing.exists())
                 {
                     InputStream is = getClass().getResourceAsStream("/yunxing.jars");
