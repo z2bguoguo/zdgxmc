@@ -75,6 +75,37 @@ public class jiemian {
             return ("");
         }
     }
+    public String geturl(String urls,int time)
+    {
+        try
+        {
+            URL url=new URL(urls);
+            URLConnection coon=url.openConnection();
+            coon.setConnectTimeout(time);
+            coon.setReadTimeout(time);
+            BufferedReader reader=new BufferedReader(new InputStreamReader(coon.getInputStream(),"UTF-8"));
+            String line;
+            String s="";
+            while((line=reader.readLine())!=null)
+            {
+                s=s+line;
+            }
+            reader.close();
+            return (s);
+        }
+        catch (MalformedURLException e)
+        {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            return ("");
+        }
+        catch (IOException e)
+        {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            return ("");
+        }
+    }
     public String[] getmod(String str)
     {
         String s;
@@ -244,9 +275,9 @@ public class jiemian {
             }
         }
     }
-    public String getgitbanben(String repos)
+    public String getgitbanben(String repos,int timeout)
     {
-        JSONObject json=JSONObject.parseObject(geturl("https://api.github.com/repos/"+repos+"/releases/latest"));
+        JSONObject json=JSONObject.parseObject(geturl("https://api.github.com/repos/"+repos+"/releases/latest",timeout));
         String name= json.getString("name");
         return (name);
     }
@@ -267,6 +298,8 @@ public class jiemian {
             js.put("loder",loder);
             js.put("GameVersionName",GameVersionName);
             js.put("AutoUpdate",true);
+            js.put("Timeout",1000);//检测本mod更新超时时间
+            js.put("Asynchronous",true);//是否多线程启动本mod
             FileWriter jsons=new FileWriter(f);
             jsons.write(JSONObject.toJSONString(js,true));
             jsons.flush();

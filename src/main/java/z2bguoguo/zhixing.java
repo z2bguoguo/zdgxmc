@@ -73,18 +73,26 @@ public class zhixing extends Thread
             File yunxing=new File(wjml+"/yunxing.jar");
             if (jsonx.getBoolean("AutoUpdate"))
             {
-                int gitbanban=Integer.parseInt(j.getgitbanben("z2bguoguo/zdgxmc"));
-                logger.info("gitbanban："+String.valueOf(gitbanban));
-                if(gitbanban>banben && tishi("检测到本mod有新版本，是否进行更新并关闭mc"))
-                {
-                    logger.info("更新zdgx");
-                    String gxdizhi=j.getgitxiazai("z2bguoguo/zdgxmc","zdgxzhixing.jar");
-                    logger.info("gxdizhi："+gxdizhi);
-                    jiemian.down downs=j.new down(gxdizhi, wjml+"\\zdgxzhixing.jar", 1,1);
-                    downs.run();
-                    yunxing.delete();
-                    System.exit(0);
+                try{
+                        int gitbanban=Integer.parseInt(j.getgitbanben("z2bguoguo/zdgxmc",jsonx.getIntValue("Timeout")));
+                        logger.info("gitbanban："+String.valueOf(gitbanban));
+                        if(gitbanban>banben && tishi("检测到本mod有新版本，是否进行更新并关闭mc"))
+                        {
+                            logger.info("更新zdgx");
+                            String gxdizhi=j.getgitxiazai("z2bguoguo/zdgxmc","zdgxzhixing.jar");
+                            logger.info("gxdizhi："+gxdizhi);
+                            jiemian.down downs=j.new down(gxdizhi, wjml+"\\zdgxzhixing.jar", 1,1);
+                            downs.run();
+                            yunxing.delete();
+                            System.exit(0);
+                        }
+                }catch (Exception e) {
+                    System.out.println("自动更新错误报告");
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+                    System.out.println("自动更新错误报告尾");
                 }
+
             }
             if (jsonx.getBoolean("enable"))
             {
@@ -149,9 +157,40 @@ public class zhixing extends Thread
     {
         GameVersionName=GameVersionNames;
         loder=loders;
-        super.start();
-    }
+        if(dxc())
+        {
+            super.start();
+        }
+        else
+        {
+            run();
+        }
 
+    }
+    public boolean dxc()
+    {
+        try{
+            String wjml=System.getProperty("user.dir")+"\\zdgx";
+            File json=new File(wjml+"/json.json");
+            if (json.exists())
+            {
+                FileReader jsons=new FileReader(json);
+                char jsonr[]=new char[1024];
+                int jsonlen= jsons.read(jsonr);
+                String jsonn=new String(jsonr,0,jsonlen);
+                JSONObject jsonx=JSONObject.parseObject(jsonn);
+                System.out.println("多线程启动："+jsonx.getBoolean("Asynchronous"));
+                return jsonx.getBoolean("Asynchronous");
+            }
+        }catch (Exception e) {
+            System.out.println("错误报告");
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
+            System.out.println("错误报告尾");
+            return true;
+        }
+        return true;
+    }
     public boolean tishi(String name)
     {
         String[] baq={"是","否"};
